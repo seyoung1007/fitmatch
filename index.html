@@ -103,16 +103,26 @@
 ══════════════════════ -->
 <div id="page-home" class="page active">
 
+  <!-- ★ 스토리 슬라이더 히어로 -->
   <div class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content">
-      <span class="hero-eye">✦ AI-Powered PT Matching</span>
-      <h1>FIND<br>YOUR<br><em>TRAINER</em></h1>
-      <p class="hero-sub">목표, 예산, 스타일에 딱 맞는 트레이너를<br>AI가 투명하게 연결해드립니다.</p>
-      <div class="hero-actions">
-        <button class="btn-hero" onclick="showPage('ai',document.querySelectorAll('.nav-link')[1])">AI 매칭 시작하기</button>
-        <button class="btn-hero-ghost" onclick="showPage('trainers',document.querySelectorAll('.nav-link')[2])">트레이너 전체보기</button>
+    <div class="hero-slide-bg" id="hero-slide-bg"></div>
+    <div class="h`ero-content">
+      <span class="slide-tag" id="slide-tag">AI-Powered PT Matching</span>
+      <h1 id="slide-head">FIND<br>YOUR<br><em>TRAINER</em></h1>
+      <p id="slide-sub">목표, 예산, 스타일에 딱 맞는 트레이너를<br>AI가 투명하게 연결해드립니다.</p>
+
+      <!-- 슬라이드 컨트롤 -->
+      <div class="slide-controls">
+        <button class="slide-btn" id="slide-prev" aria-label="이전">&#8592;</button>
+        <div class="slide-dots">
+          <button class="slide-dot active" aria-label="슬라이드 1"></button>
+          <button class="slide-dot" aria-label="슬라이드 2"></button>
+          <button class="slide-dot" aria-label="슬라이드 3"></button>
+          <button class="slide-dot" aria-label="슬라이드 4"></button>
+        </div>
+        <button class="slide-btn" id="slide-next" aria-label="다음">&#8594;</button>
       </div>
+
       <div class="hero-stats">
         <div><span class="hs-num">247</span><span class="hs-label">등록 트레이너</span></div>
         <div><span class="hs-num">4.9</span><span class="hs-label">평균 평점</span></div>
@@ -220,9 +230,49 @@
 ══════════════════════ -->
 <div id="page-ai" class="page">
 
-  <!-- ── 70vh 풀 히어로 ── -->
-  <div class="ai-hero">
+  <!-- ★ AI 히어로: 스캔 비주얼 + 매칭 스코어 -->
+  <div class="ai-hero" id="ai-hero-section">
     <div class="ai-hero-bg"></div>
+
+    <!-- AI 분석 레이블 (우상단) -->
+    <div class="ai-analyzing-label">
+      <span class="ai-pulse"></span>
+      AI ANALYZING
+    </div>
+
+    <!-- AI 스캔 카드 패널 (우측) -->
+    <div class="ai-visual-overlay">
+      <div class="ai-scan-panel">
+        <div class="ai-scan-card" id="sc1">
+          <img class="ai-scan-avatar" src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=80&q=75" alt=""/>
+          <div class="ai-scan-info">
+            <div class="ai-scan-name">이민준</div>
+            <div class="ai-scan-spec">다이어트 전문</div>
+            <div class="ai-scan-bar"><div class="ai-match-bar-fill" data-width="97%"></div></div>
+          </div>
+          <div class="ai-scan-score">97%</div>
+        </div>
+        <div class="ai-scan-card" id="sc2">
+          <img class="ai-scan-avatar" src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=80&q=75" alt=""/>
+          <div class="ai-scan-info">
+            <div class="ai-scan-name">한소희</div>
+            <div class="ai-scan-spec">바디프로필 전문</div>
+            <div class="ai-scan-bar"><div class="ai-match-bar-fill" data-width="94%"></div></div>
+          </div>
+          <div class="ai-scan-score">94%</div>
+        </div>
+        <div class="ai-scan-card" id="sc3">
+          <img class="ai-scan-avatar" src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=80&q=75" alt=""/>
+          <div class="ai-scan-info">
+            <div class="ai-scan-name">김수아</div>
+            <div class="ai-scan-spec">근력 강화 전문</div>
+            <div class="ai-scan-bar"><div class="ai-match-bar-fill" data-width="91%"></div></div>
+          </div>
+          <div class="ai-scan-score">91%</div>
+        </div>
+      </div>
+    </div>
+
     <div class="ai-hero-content">
       <span class="ai-hero-eyebrow">✦ AI-Powered Matching</span>
       <h1 class="ai-hero-title">FIND THE<br>PERFECT<br><em>TRAINER</em></h1>
@@ -230,7 +280,6 @@
         목표·예산·경험 수준을 입력하면 AI가 247명의 트레이너 중<br>
         나에게 가장 잘 맞는 트레이너를 즉시 추천해드려요.
       </p>
-      <!-- 신뢰 지표 -->
       <div class="ai-hero-trust">
         <div class="ai-trust-item">
           <span class="ai-trust-num">247</span>
@@ -249,9 +298,8 @@
           <span class="ai-trust-label">완료<br>세션</span>
         </div>
       </div>
-      <!-- CTA 버튼 -->
       <div class="ai-hero-cta-row">
-        <button class="ai-hero-cta-primary" onclick="document.getElementById('ai-form-anchor').scrollIntoView({behavior:'smooth'})">
+        <button class="ai-hero-cta-primary" onclick="document.getElementById('ai-form-anchor').scrollIntoView({behavior:'smooth'}); animateAIScore();">
           지금 AI 매칭 시작하기 ↓
         </button>
         <button class="ai-hero-cta-ghost" onclick="showPage('trainers',document.querySelectorAll('.nav-link')[2])">
@@ -259,7 +307,6 @@
         </button>
       </div>
     </div>
-    <!-- 스크롤 힌트 -->
     <div class="ai-scroll-hint">
       <span class="ai-scroll-hint-arrow">↓</span>
     </div>
