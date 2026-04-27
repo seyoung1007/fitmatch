@@ -288,7 +288,43 @@ document.addEventListener('click', e => {
   const g = e.target.dataset.g; if (!g) return;
   document.querySelectorAll(`.chip[data-g="${g}"]`).forEach(c => c.classList.remove('on'));
   e.target.classList.add('on');
+  updateLiveBanner();
 });
+
+/* ─── 라이브 개인화 배너 업데이트 ─── */
+function updateLiveBanner() {
+  const goalChip   = document.querySelector('.chip.on[data-g="goal"]');
+  const levelChip  = document.querySelector('.chip.on[data-g="level"]');
+  const budget     = document.getElementById('bslider')?.value || 8;
+  const bannerText = document.getElementById('ai-live-text');
+  if (!bannerText) return;
+
+  const goal  = goalChip?.textContent  || null;
+  const level = levelChip?.textContent || null;
+  const count = goalChip ? (parseInt(goalChip.dataset.count) || 50) : 247;
+
+  // 예산에 따라 필터링 수 조정
+  const budgetAdj = Math.round(count * (parseInt(budget) / 12));
+  const finalCount = Math.max(12, Math.min(count, budgetAdj));
+
+  let msg = '';
+  if (goal && level) {
+    msg = `✦ ${goal} 목표 · ${level} 수준에 맞는 트레이너 ${finalCount}명 매칭 가능 — 예산 ${budget}만원 이하`;
+  } else if (goal) {
+    msg = `✦ ${goal} 전문 트레이너 ${count}명이 대기 중이에요`;
+  } else if (level) {
+    msg = `✦ ${level} 수준에 맞는 트레이너를 찾고 있어요`;
+  } else {
+    msg = '조건을 선택할수록 AI가 더 정확하게 매칭해드려요';
+  }
+  bannerText.textContent = msg;
+
+  // 배너 애니메이션
+  const banner = document.getElementById('ai-live-banner');
+  if (banner && (goal || level)) {
+    banner.classList.add('active');
+  }
+}
 
 /* ─────────────────────────
    MY PAGE
@@ -446,6 +482,25 @@ function initSlider() {
    AI 히어로 매칭 스코어 애니메이션
 ════════════════════════════════════════ */
 function animateAIScore() {
+  // 신뢰 지표 카운트업 (소수점 포함)
+  document.querySelectorAll('.ai-trust-num[data-target]').forEach(el => {
+    const target  = parseFloat(el.dataset.target);
+    const suffix  = el.dataset.suffix || '';
+    const decimal = parseInt(el.dataset.decimal || '0');
+    const isLarge = target > 100;
+    const steps   = isLarge ? 60 : 40;
+    let   current = 0;
+    const increment = target / steps;
+    const timer = setInterval(() => {
+      current = Math.min(current + increment, target);
+      el.textContent = current.toFixed(decimal) + suffix;
+      if (current >= target) {
+        el.textContent = target.toFixed(decimal) + suffix;
+        clearInterval(timer);
+      }
+    }, isLarge ? 20 : 35);
+  });
+
   // 스코어 카운터 애니메이션
   document.querySelectorAll('.ai-score-num').forEach(el => {
     const target = parseInt(el.dataset.target || el.textContent);
@@ -476,17 +531,9 @@ const POPUP_KEY  = 'fm_promo_seen';
 const BANNER_KEY = 'fm_banner_closed';
 
 function initPromo() {
-  const lastSeen = localStorage.getItem(POPUP_KEY);
-  const INTERVAL = 24 * 60 * 60 * 1000;
-  if (!lastSeen || Date.now() - parseInt(lastSeen) > INTERVAL) {
-    setTimeout(() => {
-      document.getElementById('promo-overlay')?.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      startPromoTimer();
-    }, 1200);
-  } else {
-    showFloatBanner();
-  }
+  // 팝업 → 스크롤 섹션으로 대체. 플로팅 배너만 유지
+  showFloatBanner();
+  startScrollPromoTimer();
 }
 
 function closePromo(goAI = false) {
@@ -513,6 +560,21 @@ function showFloatBanner() {
 }
 
 let timerInterval = null;
+function startScrollPromoTimer() {
+  let total = 23*3600 + 59*60 + 59;
+  function render() {
+    const h=String(Math.floor(total/3600)).padStart(2,'0');
+    const m=String(Math.floor((total%3600)/60)).padStart(2,'0');
+    const s=String(total%60).padStart(2,'0');
+    const hEl=document.getElementById('ps-h');
+    const mEl=document.getElementById('ps-m');
+    const sEl=document.getElementById('ps-s');
+    if(hEl)hEl.textContent=h; if(mEl)mEl.textContent=m; if(sEl)sEl.textContent=s;
+  }
+  render();
+  setInterval(()=>{ total=Math.max(0,total-1); render(); }, 1000);
+}
+
 function startPromoTimer() {
   let total = 23*3600 + 59*60 + 59;
   function render() {
@@ -533,6 +595,9 @@ function stopPromoTimer() { if(timerInterval){clearInterval(timerInterval);timer
 renderTrainers(TRAINERS);
 updateBookingBadge();
 initPromo();
+
+/* 예산 슬라이더 라이브 카운터 */
+document.getElementById('bslider')?.addEventListener('input', updateLiveBanner);
 
 // DOM 준비 후 슬라이더 + 스크롤 애니메이션 시작
 document.addEventListener('DOMContentLoaded', () => {

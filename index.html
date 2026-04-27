@@ -149,6 +149,49 @@
 
   <hr class="divider"/>
 
+  <!-- ★ 스크롤형 프로모 섹션 (팝업 대체) -->
+  <div class="promo-scroll-section reveal">
+    <div class="promo-scroll-inner">
+      <div class="promo-scroll-left">
+        <span class="promo-scroll-badge">🎁 신규 회원 한정 혜택</span>
+        <h2 class="promo-scroll-title">첫 PT 세션<br><em>30% 할인</em></h2>
+        <p class="promo-scroll-desc">
+          지금 AI 매칭으로 트레이너를 찾고,<br>
+          첫 세션 30% 할인 쿠폰을 바로 받아보세요.
+        </p>
+        <div class="promo-scroll-perks">
+          <div class="promo-scroll-perk"><span class="promo-perk-check">✓</span>첫 세션 30% 할인 즉시 지급</div>
+          <div class="promo-scroll-perk"><span class="promo-perk-check">✓</span>무료 체형 분석 상담 1회</div>
+          <div class="promo-scroll-perk"><span class="promo-perk-check">✓</span>AI 트레이너 매칭 무제한</div>
+        </div>
+        <div class="promo-scroll-timer-row">
+          <span class="promo-scroll-timer-label">⏱ 오늘 한정 종료까지</span>
+          <div class="promo-scroll-timer">
+            <span class="pst-unit" id="ps-h">23</span>
+            <span class="pst-sep">:</span>
+            <span class="pst-unit" id="ps-m">59</span>
+            <span class="pst-sep">:</span>
+            <span class="pst-unit" id="ps-s">59</span>
+          </div>
+        </div>
+        <button class="promo-scroll-cta" onclick="showPage('ai',document.querySelectorAll('.nav-link')[1])">
+          지금 AI 매칭으로 할인받기 →
+        </button>
+      </div>
+      <div class="promo-scroll-right">
+        <div class="promo-scroll-img-wrap">
+          <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=80" alt="프로모션"/>
+          <div class="promo-scroll-img-badge">
+            <span class="psib-num">30%</span>
+            <span class="psib-label">할인</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
   <!-- HOW IT WORKS -->
   <div class="section">
     <div class="label-tag">How It Works</div>
@@ -218,7 +261,7 @@
     </div>
     <div class="footer-bottom">
       <span class="f-copy">© 2026 FitMatch Inc. All rights reserved.</span>
-      <div class="f-badges"><span class="f-badge">🔒 SSL 보안</span><span class="f-badge">✓ 인증 트레이너</span>
+      <div class="f-badges"><span class="f-badge">🔒 SSL 보안</span><span class="f-badge">✓ 인증 트레이너</span><span class="f-badge">0% 수수료</span></div>
     </div>
   </footer>
 </div>
@@ -281,16 +324,20 @@
       </p>
       <div class="ai-hero-trust">
         <div class="ai-trust-item">
-          <span class="ai-trust-num">247</span>
-          <span class="ai-trust-label">인증<br>트레이너</span>
+          <span class="ai-trust-num" data-target="12000" data-suffix="+">0+</span>
+          <span class="ai-trust-label">누적<br>매칭 수</span>
         </div>
         <div class="ai-trust-item">
-          <span class="ai-trust-num">4.9</span>
-          <span class="ai-trust-label">평균<br>평점</span>
+          <span class="ai-trust-num" data-target="4.9" data-suffix="" data-decimal="1">0</span>
+          <span class="ai-trust-label">평균<br>만족도</span>
         </div>
         <div class="ai-trust-item">
-          <span class="ai-trust-num">32K</span>
-          <span class="ai-trust-label">완료<br>세션</span>
+          <span class="ai-trust-num" data-target="92" data-suffix="%">0%</span>
+          <span class="ai-trust-label">목표<br>달성률</span>
+        </div>
+        <div class="ai-trust-item">
+          <span class="ai-trust-num" data-target="350" data-suffix="+">0+</span>
+          <span class="ai-trust-label">활동<br>트레이너</span>
         </div>
       </div>
       <div class="ai-hero-cta-row">
@@ -310,9 +357,15 @@
   <!-- ── AI 폼 ── -->
   <div class="ai-form-section" id="ai-form-anchor">
     <div class="ai-form-section-title">AI 맞춤 추천</div>
-    <p class="ai-form-section-sub">아래 조건을 선택하면 AI가 최적의 트레이너를 찾아드려요</p>
+    <p class="ai-form-section-sub">조건을 선택할수록 AI가 더 정확하게 매칭해드려요</p>
 
-    <div class="form-block"><div class="f-heading">운동 목표</div><div class="chip-wrap"><button class="chip" data-g="goal">다이어트</button><button class="chip" data-g="goal">근력 증가</button><button class="chip" data-g="goal">체형 교정</button><button class="chip" data-g="goal">바디프로필</button><button class="chip" data-g="goal">재활·부상</button><button class="chip" data-g="goal">스트레스 해소</button></div></div>
+    <!-- ★ 개인화 라이브 배너 -->
+    <div class="ai-live-banner" id="ai-live-banner">
+      <span class="ai-live-dot"></span>
+      <span class="ai-live-text" id="ai-live-text">조건을 선택하면 매칭 트레이너 수를 실시간으로 보여드려요</span>
+    </div>
+
+    <div class="form-block"><div class="f-heading">운동 목표</div><div class="chip-wrap"><button class="chip" data-g="goal" data-count="82">다이어트</button><button class="chip" data-g="goal" data-count="67">근력 증가</button><button class="chip" data-g="goal" data-count="54">체형 교정</button><button class="chip" data-g="goal" data-count="44">바디프로필</button><button class="chip" data-g="goal" data-count="38">재활·부상</button><button class="chip" data-g="goal" data-count="29">스트레스 해소</button></div></div>
     <div class="form-block"><div class="f-heading">운동 경험 수준</div><div class="chip-wrap"><button class="chip" data-g="level">완전 초보</button><button class="chip" data-g="level">기초 있음</button><button class="chip" data-g="level">중급</button><button class="chip" data-g="level">고급</button></div></div>
     <div class="form-block"><div class="f-heading">1회 세션 예산</div><div class="budget-display"><input type="range" id="bslider" min="3" max="20" value="8" step="1" oninput="document.getElementById('bval').textContent=this.value"/><span class="budget-num" id="bval">8</span><span class="budget-unit">만원</span></div></div>
     <div class="form-block"><div class="f-heading">트레이너 성별 선호</div><div class="chip-wrap"><button class="chip on" data-g="gender">상관없음</button><button class="chip" data-g="gender">남성</button><button class="chip" data-g="gender">여성</button></div></div>
@@ -517,9 +570,9 @@
 
 
 <!-- ══════════════════════════════════════
-     웰컴 프로모션 팝업
+     웰컴 프로모션 팝업 (비활성 - 스크롤 섹션으로 대체)
 ══════════════════════════════════════ -->
-<div class="promo-overlay hidden" id="promo-overlay">
+<div class="promo-overlay hidden" id="promo-overlay" style="display:none!important">
   <div class="promo-modal">
     <!-- 닫기 버튼 -->
     <button class="promo-close" onclick="closePromo(false)" aria-label="닫기">✕</button>
